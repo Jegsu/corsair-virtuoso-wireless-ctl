@@ -1,0 +1,78 @@
+.TH CORSAIRVIRTUOSOCTL 1 2026-10-01 "linux-corsair-headset-controller" "User Commands"
+.SH NAME
+corsairvirtuosoctl \- control a Corsair Virtuoso RGB Wireless XT headset
+.SH SYNOPSIS
+.B corsairvirtuosoctl
+.B status
+.br
+.B corsairvirtuosoctl sidetone
+.BR on | off | toggle
+.br
+.B corsairvirtuosoctl sidetone\-volume
+.I percent
+.br
+.B corsairvirtuosoctl brightness
+.I percent
+.br
+.B corsairvirtuosoctl sleep\-timer
+.I minutes
+.SH DESCRIPTION
+.B corsairvirtuosoctl
+reads and changes settings on a Corsair Virtuoso RGB Wireless XT headset through its
+SlipStream wireless dongle (USB ID 1b1c:0a64). It talks to the dongle directly through
+the dongle's
+.I /dev/hidrawN
+node for USB interface 3, opening it for a single command and closing it again.
+No daemon is needed.
+.PP
+The headset rejects writes in its default hardware mode. For each change,
+.B corsairvirtuosoctl
+switches the headset to software mode, writes the setting, and switches back. The
+headset keeps the new value after switching back.
+.SH COMMANDS
+.TP
+.B status
+Show firmware version, battery level, charging state, battery voltage, whether the
+USB cable is connected, mic mute state, and the current sidetone, brightness and
+sleep-timer settings.
+.TP
+.BR sidetone " " on | off | toggle
+Turn sidetone (hearing your own mic in the headset) on or off, or flip its current
+state. Prints the resulting state.
+.TP
+.BI sidetone\-volume " percent"
+Set the sidetone level, 0\(en100.
+.TP
+.BI brightness " percent"
+Set the LED brightness, 0\(en100.
+.TP
+.BI sleep\-timer " minutes"
+Put the headset to sleep after
+.I minutes
+of inactivity, 1\(en60.
+.B 0
+turns the timer off.
+.SH OPTIONS
+.TP
+.BR \-h ", " \-\-help
+Show usage and exit. Each command also accepts
+.BR \-h .
+.SH EXIT STATUS
+.B 0
+on success, non-zero on failure. Failures include the dongle not being found, missing
+permission to open its hidraw node, no response from the headset (for example when it
+is switched off), or the headset rejecting a command.
+.SH FILES
+.TP
+.I /etc/udev/rules.d/70\-corsair\-headset.rules
+udev rule that lets the logged-in user open the dongle's hidraw nodes without root.
+.SH EXAMPLES
+.EX
+corsairvirtuosoctl status
+corsairvirtuosoctl sidetone toggle
+corsairvirtuosoctl sidetone\-volume 40
+corsairvirtuosoctl sleep\-timer 15
+.EE
+.SH NOTES
+Only the Virtuoso RGB Wireless XT is supported. The volume wheel and Bluetooth state
+are handled by the headset itself and cannot be read or changed.
