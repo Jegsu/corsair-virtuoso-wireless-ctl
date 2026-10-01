@@ -1,4 +1,4 @@
-# linux-corsair-headset-controller
+# corsairvirtuosoctl
 
 A small Python 3 command-line tool for the **Corsair Virtuoso RGB Wireless XT**
 headset (SlipStream dongle `1b1c:0a64`) on Linux. It needs no third-party packages,
@@ -11,8 +11,9 @@ ckb-next doesn't support this dongle and never takes it over, so the script and
 ckb-next can run at the same time.
 
 ## Install
-Running the installer copies the script to ~/.local/bin/corsairvirtuosoctl, the man page to
-~/.local/share/man/man1, and installs the udev rule
+
+The installer copies the script to `~/.local/bin/corsairvirtuosoctl` and the man page to
+`~/.local/share/man/man1/`, and installs the udev rule (needs sudo):
 
 ```sh
 ./install.sh
